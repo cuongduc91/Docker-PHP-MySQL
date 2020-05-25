@@ -5,8 +5,8 @@ As localhost name
 # www
 As the php dockerfile folder
 # Important! 
-##Granting privileges to another user 
-##In terminal:
+## Granting privileges to another user 
+## In terminal:
    ```
    docker exec -it <container name or id>   bash
    mysql -u root -p
