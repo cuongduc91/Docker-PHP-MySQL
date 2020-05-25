@@ -1,18 +1,42 @@
 version: "3"
+
+networks:
+  frontend:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.10.1.0/24
+  backend:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.10.2.0/23
+
 services:
-  php:
-    build: .
+  db:
+    build: ./db
+    command: --default-authentication-plugin=mysql_native_password
     ports:
-      - "8000:80"
+      - 3308:3306
+    networks:
+      backend:
+        ipv4_address: 172.10.3.2
+    env_file:
+      - ./development.env
+  www:
+    build: ./www
+    ports:
+      - 8000:80
     volumes:
       - ./src:/var/www/html/
-  db:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
-    volumes:
-      - ./db:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: 12345
-      MYSQL_DATABASE: php_database
-    ports:
-      - 3307:3306
+    networks:
+      backend:
+        ipv4_address: 172.10.2.2
+      frontend:
+        ipv4_address: 172.10.1.2
+    depends_on:
+      - db
+    env_file:
+      - ./development.env
