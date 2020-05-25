@@ -4,7 +4,7 @@ Docker-PHP-MySQL
 As localhost name
 # www
 As the php dockerfile folder
-#Important! 
+# Important! 
 *Granting privileges to another user 
 **In terminal:
    docker exec -it <container name or id>   bash
